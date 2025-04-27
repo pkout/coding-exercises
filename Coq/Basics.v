@@ -128,3 +128,57 @@ Example test_isred3: isred (prim blue) = false.
 Proof. simpl. reflexivity. Qed.
 Example test_isred4: isred white = false.
 Proof. simpl. reflexivity. Qed.
+
+Inductive bit : Type :=
+  | B0
+  | B1.
+
+Inductive nybble : Type :=
+  | bits (b0 b1 b2 b3 : bit).
+
+Check (bits B0 B0 B0 B1).
+
+Definition all_zero (nb: nybble) : bool :=
+  match nb with
+    | bits B0 B0 B0 B0 => true
+    | bits _ _ _ _ => false
+  end.
+
+Compute (all_zero (bits B0 B0 B0 B0)).
+
+Module NatPlayground.
+
+Inductive nat : Type :=
+  | O
+  | S (n : nat).
+
+Definition pred (n : nat) : nat :=
+  match n with
+    | O => O
+    | S n' => n'
+  end.
+
+Compute (pred (S (S O))).
+
+Check (S (S O)).
+
+Definition minustwo (n : nat) : nat :=
+  match n with
+    | O => O
+    | S O => O
+    | S (S n') => n'
+  end.
+
+Compute (minustwo (S (S (S (S O))))).
+Compute (minustwo (S O)).
+
+Fixpoint even (n : nat) : bool :=
+  match n with
+    | O => true
+    | S O => false
+    | S (S n') => even n'
+  end.
+
+Compute (even (S (S (S O)))).
+
+End NatPlayground.
